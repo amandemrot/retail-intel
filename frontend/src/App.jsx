@@ -8,7 +8,9 @@ import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer 
 } from 'recharts';
 
-const BACKEND_URL = "http://127.0.0.1:8000";
+const BACKEND_URL = (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'))
+  ? "http://127.0.0.1:8000" 
+  : "https://retail-intel.onrender.com";
 const BRANDS_LIST = ["Intel", "AMD", "Qualcomm", "Apple"];
 
 function App() {
