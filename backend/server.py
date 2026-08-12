@@ -48,6 +48,12 @@ def serialize_mongo(doc):
 class ChatRequest(BaseModel):
     message: str
 
+# Root Health-Check Endpoint for UptimeRobot
+@app.get("/")
+@app.head("/")
+def health_check():
+    return {"status": "online", "app": "Bridge AI Competitive Intel API"}
+
 # 1. Summary Metrics Endpoint
 @app.get("/api/dashboard/summary")
 def get_summary():
