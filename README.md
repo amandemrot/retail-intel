@@ -8,6 +8,11 @@ Built with **FastAPI + React + MongoDB Atlas + Google Gemini AI**.
 
 ## 📸 Features Overview
 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/5904c55a-987f-4024-90d8-c19d6b73014e" width="49%" alt="Dashboard Summary" />
+  <img src="https://github.com/user-attachments/assets/31e3193c-253b-4a81-be6a-8e0d9c6ccf76" width="49%" alt="Audit Detail View" />
+</p>
+
 ### 1. Dashboard Summary
 - **Weighted Compliance Scores** — 85% Notebook / 15% Desktop weighted average per brand
 - **Share of Shelf** — Brand visibility as percentage of total product listings
