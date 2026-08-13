@@ -7,9 +7,6 @@ Built with **FastAPI + React + MongoDB Atlas + Google Gemini AI**.
 ---
 
 ## 📸 Features Overview
-<img width="1916" height="912" alt="image" src="https://github.com/user-attachments/assets/9e8d4b5d-3839-42b5-b130-e3626a49fbf1" />
-
-
 
 ### 1. Dashboard Summary
 - **Weighted Compliance Scores** — 85% Notebook / 15% Desktop weighted average per brand
