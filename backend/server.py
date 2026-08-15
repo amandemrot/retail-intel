@@ -56,6 +56,7 @@ def health_check():
 
 # 1. Summary Metrics Endpoint
 @app.get("/api/dashboard/summary")
+@app.head("/api/dashboard/summary")
 def get_summary():
     try:
         return get_dashboard_summary()
@@ -64,6 +65,7 @@ def get_summary():
 
 # 2. Historical Trends Endpoint
 @app.get("/api/dashboard/trends")
+@app.head("/api/dashboard/trends")
 def get_trends():
     try:
         return get_historical_trends()
