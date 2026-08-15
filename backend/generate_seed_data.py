@@ -137,10 +137,10 @@ while current_date <= end_date:
             "Apple": "https://www.newegg.com/p/pl?d=macbook+pro"
         },
         "Mercado Libre": {
-            "Intel": "https://listado.mercadolibre.com.br/notebook-intel-core",
-            "AMD": "https://listado.mercadolibre.com.br/notebook-amd-ryzen",
-            "Qualcomm": "https://listado.mercadolibre.com.br/notebook-snapdragon",
-            "Apple": "https://listado.mercadolibre.com.br/macbook-pro"
+            "Intel": "https://lista.mercadolivre.com.br/notebook-intel",
+            "AMD": "https://lista.mercadolivre.com.br/notebook-amd",
+            "Qualcomm": "https://lista.mercadolivre.com.br/notebook-snapdragon",
+            "Apple": "https://lista.mercadolivre.com.br/macbook"
         }
     }
 
@@ -166,4 +166,4 @@ db.banners.insert_many(banners_to_insert)
 
 print(f"Generated and loaded {len(scrapes_to_insert)} price/audit logs into MongoDB.")
 print(f"Generated and loaded {len(banners_to_insert)} daily homepage banner logs into MongoDB.")
-print("Database seeding completed successfully! 🎉")
+print("Database seeding completed successfully!")
