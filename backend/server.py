@@ -191,10 +191,23 @@ def ask_copilot(req: ChatRequest):
         def generate_smart_fallback(user_query):
             user_q = user_query.lower()
             user_words = set(user_q.split())
+            
+            # Dynamic Budget Query Parsing (e.g. "budget is 1000 dollar", "under 1500", "$1200")
+            import re
+            budget_match = re.search(r'(?:budget|under|below|less than|\$)\s*(\d+)', user_q)
+            if budget_match:
+                max_price = float(budget_match.group(1))
+                matches = list(db.products.find({"base_price": {"$lte": max_price + 100}}).sort("base_price", 1))
+                if matches:
+                    items_str = "\n".join([f"- **{m['name']}** ({m['brand']}): **${m['base_price']}** — {m['processor']} ({m['type']})" for m in matches[:4]])
+                    return f"Here are the best laptop/desktop options in your database near your **${int(max_price)}** budget:\n{items_str}"
+                else:
+                    return f"Our entry catalog model is the **Acer Nitro V 16 (AMD Ryzen 7)** starting at **$999**. The next options start at $1,049."
+
             if any(w in user_words for w in ["hi", "hello", "hey"]) or "how are you" in user_q or "who are you" in user_q:
                 return "Hi! I'm your AI Retail Copilot. I'm doing great and ready to analyze database metrics for you! Ask me about compliance scores, share of shelf, or promotional pricing across Intel, AMD, Qualcomm, and Apple."
             elif any(w in user_words for w in ["laptop", "laptops", "recommend", "best", "buying"]):
-                return "Based on database metrics across 28 SKUs:\n- **MacBook Pro 16 (Apple M4 Pro):** $2,499 (High-end flagship)\n- **Asus ROG Zephyrus G14 (AMD Ryzen 9):** $1,599 (Top gaming value)\n- **Dell G16 Gaming Laptop (Intel i7):** $1,399 (Base MSRP, 100% compliance)\n- **Dell Inspiron 14 Plus (Snapdragon X Elite):** $1,099 (Best entry Copilot+ AI PC)"
+                return "Based on database metrics across 28 SKUs:\n- **Acer Nitro V 16 (AMD Ryzen 7):** $999 (Best Budget Option)\n- **Dell Inspiron 14 Plus (Snapdragon X Elite):** $1,099 (Best Entry AI PC)\n- **Dell G16 Gaming Laptop (Intel i7):** $1,399 (100% Audit Compliance)\n- **Asus ROG Zephyrus G14 (AMD Ryzen 9):** $1,599 (Top Gaming Value)\n- **MacBook Pro 16 (Apple M4 Pro):** $2,499 (High-end Flagship)"
             elif any(p_kw in user_q for p_kw in ["price", "pricing", "cost", "expensive", "cheap", "how much", "rate", "their price"]):
                 newegg_pricing = [p for p in pricing if p.get("platform") == "Newegg"]
                 price_str = ", ".join([f"**{p['brand']}:** ${p['avg_price']} avg" for p in newegg_pricing])
