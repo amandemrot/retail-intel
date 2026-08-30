@@ -188,10 +188,13 @@ def ask_copilot(req: ChatRequest):
         shelf = summary.get("share_of_shelf", {}).get("Newegg", {})
         pricing = summary.get("pricing", [])
         
-        # Smart rule-based fallback message in case AI API is unreachable
         def generate_smart_fallback(user_query):
             user_q = user_query.lower()
-            if "compliance" in user_q:
+            if any(greeting in user_q for greeting in ["hi", "hello", "hey", "how are you", "how's it going", "who are you"]):
+                return "Hi! I'm your AI Retail Copilot. I'm doing great and ready to analyze database metrics for you! Ask me about compliance scores, share of shelf, or promotional pricing across Intel, AMD, Qualcomm, and Apple."
+            elif any(thx in user_q for thx in ["thank", "thanks", "awesome", "great"]):
+                return "You're very welcome! Let me know if you need any more competitive intelligence insights!"
+            elif "compliance" in user_q:
                 top_comp = sorted(comp.items(), key=lambda x: x[1], reverse=True)
                 return f"Based on live database audit logs, **{top_comp[0][0]}** holds the highest compliance score on Newegg at **{top_comp[0][1]}%**, followed by {', '.join([f'{k}: {v}%' for k,v in top_comp[1:]])}."
             elif "promo" in user_q or "discount" in user_q or "deal" in user_q:
