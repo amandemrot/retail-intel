@@ -575,8 +575,9 @@ function App() {
               <div className="chat-messages">
                 {chatMessages.map((msg, index) => (
                   <div 
-                    key={index}
+                    key={index} 
                     className={`chat-bubble ${msg.sender === 'user' ? 'chat-bubble-user' : 'chat-bubble-assistant'}`}
+                    style={{ whiteSpace: 'pre-wrap', lineHeight: '1.6' }}
                   >
                     {msg.text}
                   </div>

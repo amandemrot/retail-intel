@@ -199,19 +199,19 @@ def ask_copilot(req: ChatRequest):
                 max_price = float(budget_match.group(1))
                 matches = list(db.products.find({"base_price": {"$lte": max_price + 100}}).sort("base_price", 1))
                 if matches:
-                    items_str = "\n".join([f"- **{m['name']}** ({m['brand']}): **${m['base_price']}** — {m['processor']} ({m['type']})" for m in matches[:4]])
-                    return f"Here are the best laptop/desktop options in your database near your **${int(max_price)}** budget:\n{items_str}"
+                    items_str = "\n\n".join([f"• **{m['name']}** ({m['brand']})\n  └ Price: **${m['base_price']}** | Specs: {m['processor']} ({m['specs'].get('RAM', '16GB')}/{m['specs'].get('Storage', '512GB')})" for m in matches[:4]])
+                    return f"Here are the top options in your database near your **${int(max_price)}** budget:\n\n{items_str}"
                 else:
-                    return f"Our entry catalog model is the **Acer Nitro V 16 (AMD Ryzen 7)** starting at **$999**. The next options start at $1,049."
+                    return f"Our entry catalog model is the **Acer Nitro V 16 (AMD Ryzen 7)** starting at **$999**."
 
             if any(w in user_words for w in ["hi", "hello", "hey"]) or "how are you" in user_q or "who are you" in user_q:
                 return "Hi! I'm your AI Retail Copilot. I'm doing great and ready to analyze database metrics for you! Ask me about compliance scores, share of shelf, or promotional pricing across Intel, AMD, Qualcomm, and Apple."
             elif any(w in user_words for w in ["laptop", "laptops", "recommend", "best", "buying"]):
-                return "Based on database metrics across 28 SKUs:\n- **Acer Nitro V 16 (AMD Ryzen 7):** $999 (Best Budget Option)\n- **Dell Inspiron 14 Plus (Snapdragon X Elite):** $1,099 (Best Entry AI PC)\n- **Dell G16 Gaming Laptop (Intel i7):** $1,399 (100% Audit Compliance)\n- **Asus ROG Zephyrus G14 (AMD Ryzen 9):** $1,599 (Top Gaming Value)\n- **MacBook Pro 16 (Apple M4 Pro):** $2,499 (High-end Flagship)"
+                return "Top Database Recommendations by Category:\n\n• **Best Budget Laptop ($999):**\n  └ Acer Nitro V 16 (AMD Ryzen 7 8845HS, RTX 4050)\n\n• **Best Entry AI PC ($1,099):**\n  └ Dell Inspiron 14 Plus (Snapdragon X Elite CoPilot+)\n\n• **Best High Compliance Laptop ($1,399):**\n  └ Dell G16 Gaming Laptop (Intel Core i7-13700HX)\n\n• **Best Gaming Value ($1,599):**\n  └ Asus ROG Zephyrus G14 (AMD Ryzen 9 8945HS, RTX 4070)\n\n• **Best High-End Flagship ($2,499):**\n  └ MacBook Pro 16 (Apple M4 Pro, 24GB RAM)"
             elif any(p_kw in user_q for p_kw in ["price", "pricing", "cost", "expensive", "cheap", "how much", "rate", "their price"]):
                 newegg_pricing = [p for p in pricing if p.get("platform") == "Newegg"]
-                price_str = ", ".join([f"**{p['brand']}:** ${p['avg_price']} avg" for p in newegg_pricing])
-                return f"Average catalog pricing across brands on Newegg:\n- {price_str}\n\nSpecific models range from **$999** (Acer Nitro V 16) to **$3,199** (MacBook Pro 14 M3 Max)."
+                price_str = "\n".join([f"• **{p['brand']}:** ${p['avg_price']} avg price ({p['promo_share']}% on deal)" for p in newegg_pricing])
+                return f"Average catalog pricing across brands on Newegg:\n\n{price_str}\n\nSpecific models range from **$999** (Acer Nitro V 16) to **$3,199** (MacBook Pro 14 M3 Max)."
             elif any(thx in user_q for thx in ["thank", "thanks", "awesome", "great"]):
                 return "You're very welcome! Let me know if you need any more competitive intelligence insights!"
             elif "compliance" in user_q:
